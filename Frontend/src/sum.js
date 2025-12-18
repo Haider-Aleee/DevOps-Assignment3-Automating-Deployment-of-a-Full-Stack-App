@@ -1,4 +1,3 @@
-
 export default function sum() {
   var s = 0;
   for (var i=0; i < arguments.length; i++) {
@@ -6,4 +5,3 @@ export default function sum() {
   }
   return s;
 }
-  

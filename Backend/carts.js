@@ -1,4 +1,4 @@
-﻿var express = require('express');
+var express = require('express');
 var router = express.Router();
 
 let activeCarts = [
@@ -9,13 +9,13 @@ let activeCarts = [
         title: "Fresh Strawberries",
         description: "Assorted sizes, 2 cartons",
         cost: 200,
-        imageUrl: "stawberries.jpg"
+        imageUrl: "/images/strawberries.svg"
       },
       {
         title: "Fresh Blackberries",
         description: "Assorted sizes, 2 cartons",
         cost: 295,
-        imageUrl: "blackberries.jpg"
+        imageUrl: "/images/blackberries.svg"
       }
     ]
   },
@@ -26,19 +26,13 @@ let activeCarts = [
         title: "Yummy cookies",
         description: "Flour and chocolate chips",
         cost: 150,
-        imageUrl: "cookies.jpg"
+        imageUrl: "/images/cookies.svg"
       }
     ]
   }
 ]
 
-//
-// Return shopping cart items for a cart id.
-//
-// NOTE: for if have a JWT that need to be validated will need that middleware inserted
-// router.get('/:id', authHelper.checkAuth, function (req, res, next) {
 router.get('/:id', function (req, res, next) {
-  // TODO: Return a 404 error if the cart ID does not exist!
   let cart = activeCarts.find(x => x.cartID === req.params.id)
   if (cart === undefined) {
     let err = new Error('Cart was not found.');

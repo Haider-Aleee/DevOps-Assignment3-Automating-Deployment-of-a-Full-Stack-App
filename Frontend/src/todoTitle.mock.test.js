@@ -13,6 +13,3 @@ describe('todoTitle', () => {
         expect(axios.get).toHaveBeenCalledTimes(1);
     });
 });
-
-
-// example from https://blog.jimmydc.com/mock-asynchronous-functions-with-jest/

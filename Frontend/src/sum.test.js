@@ -1,4 +1,4 @@
-﻿import sum from './sum'
+import sum from './sum'
 
 describe('Test Suite for sum function', () => {
   test('sum of two values is correct', () => {

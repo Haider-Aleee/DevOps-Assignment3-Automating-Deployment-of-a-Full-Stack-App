@@ -18,12 +18,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "build-react": "react-scripts build",
-    "start-node": "node index.js",
-    "test-react": "react-scripts test --coverage --watchAll=false --env=jsdom",
-    "test-API": "jest --runInBand --testTimeout 999999 --collectCoverage true api_endpoint.test.js",
-    "test": "react-scripts test src/todoTitle.mock.test.js",
-    "start": "node index.js"
+  "build-react": "cd Frontend && npm install && npm run build",
+    "start-node": "cd Backend && npm start",
+  "test-react": "cd Frontend && npm install && npm test -- --coverage --watchAll=false --env=jsdom",
+  "test-API": "cd Backend && npm install && npm test",
+    "test": "cd Frontend && npm test src/todoTitle.mock.test.js",
+    "start": "cd Backend && npm start"
   },
   "eslintConfig": {
     "extends": [

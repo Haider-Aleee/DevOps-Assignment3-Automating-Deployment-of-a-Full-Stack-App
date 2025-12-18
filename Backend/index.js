@@ -1,4 +1,4 @@
-﻿var express = require('express'); // For route handlers and templates to serve up.
+var express = require('express'); // For route handlers and templates to serve up.
 var path = require('path'); // Populating the path property of the request
 var responseTime = require('response-time'); // For code timing checks for performance logging
 var logger = require('morgan'); // HTTP request logging
@@ -17,9 +17,10 @@ app.use(express.json())
 
 // Serving up of React app HTML with its static content - images, CSS files, and JavaScript files
 app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  // Serve the frontend production build from Frontend/build
+  res.sendFile(path.join(__dirname, '..', 'Frontend', 'build', 'index.html'));
 });
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, '..', 'Frontend', 'build')));
 
 // Rest API routes
 app.use('/api/carts', carts);
