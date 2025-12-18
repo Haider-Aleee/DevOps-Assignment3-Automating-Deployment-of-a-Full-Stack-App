@@ -2,6 +2,7 @@ var express = require('express'); // For route handlers and templates to serve u
 var path = require('path'); // Populating the path property of the request
 var responseTime = require('response-time'); // For code timing checks for performance logging
 var logger = require('morgan'); // HTTP request logging
+var fs = require('fs'); // For checking if build directory exists
 
 var carts = require('./carts');
 var app = express();
@@ -15,12 +16,30 @@ app.use(logger('dev'));
 // Sets up the response object in routes to contain a body property with an object of what is parsed from a JSON body request payload
 app.use(express.json())
 
+// CORS support for development (when frontend runs on different port)
+if (app.get('env') === 'development') {
+  app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
+  });
+}
+
 // Serving up of React app HTML with its static content - images, CSS files, and JavaScript files
-app.get('/', function (req, res) {
-  // Serve the frontend production build from Frontend/build
-  res.sendFile(path.join(__dirname, '..', 'Frontend', 'build', 'index.html'));
-});
-app.use(express.static(path.join(__dirname, '..', 'Frontend', 'build')));
+// Only serve static files in production when build directory exists
+var buildPath = path.join(__dirname, '..', 'Frontend', 'build');
+if (fs.existsSync(buildPath)) {
+  app.get('/', function (req, res) {
+    // Serve the frontend production build from Frontend/build
+    res.sendFile(path.join(buildPath, 'index.html'));
+  });
+  app.use(express.static(buildPath));
+}
 
 // Rest API routes
 app.use('/api/carts', carts);
