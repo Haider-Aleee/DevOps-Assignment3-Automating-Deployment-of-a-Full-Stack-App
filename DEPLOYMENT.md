@@ -49,7 +49,7 @@ npm run start-node
 The backend server will:
 - Serve the React app from `Frontend/build/` on the root route (`/`)
 - Serve API endpoints at `/api/carts/:id`
-- Run on port 3000 (or PORT environment variable)
+- Run on port 80 (or PORT environment variable, defaults to 3000 in development)
 
 ### 4. Environment Variables
 
@@ -91,25 +91,45 @@ Install PM2:
 sudo npm install -g pm2
 ```
 
-Start the application:
+**Option 1: Run on Port 80 (Recommended for Production)**
+
+Since port 80 requires root privileges, use sudo:
 ```bash
-PORT=3000 pm2 start Backend/index.js --name "react-node-app"
+cd Backend
+sudo PORT=80 pm2 start index.js --name "react-node-app"
+sudo pm2 save
+sudo pm2 startup
+```
+
+**Option 2: Run on Port 3000 (Alternative)**
+
+If you prefer not to use sudo, run on port 3000:
+```bash
+cd Backend
+PORT=3000 pm2 start index.js --name "react-node-app"
 pm2 save
 pm2 startup
 ```
 
+**Note:** If using port 3000, users must access the app as `http://<Instance_IP>:3000` instead of `http://<Instance_IP>`.
+
 ### Step 5: Configure Security Groups
 
 Ensure your EC2 security group allows:
-- Inbound traffic on port 3000 (or your chosen port) from your IP or 0.0.0.0/0
-- SSH access on port 22
+- **HTTP (Port 80)**: Type: HTTP, Protocol: TCP, Port: 80, Source: 0.0.0.0/0 (or specific IPs)
+- **Custom TCP (Port 3000)**: Type: Custom TCP, Protocol: TCP, Port: 3000, Source: 0.0.0.0/0 (if using port 3000 instead)
+- **SSH (Port 22)**: Type: SSH, Protocol: TCP, Port: 22, Source: Your IP or 0.0.0.0/0
+
+**Note:** The workflows are configured to use port 80, so ensure HTTP port 80 is open in your security group.
 
 ### Step 6: Access the Application
 
 Open your browser and navigate to:
 ```
-http://your-ec2-public-ip:3000
+http://your-ec2-public-ip
 ```
+
+**Note:** If you configured the app to run on port 80, you can access it without specifying the port. If you're using port 3000, use `http://your-ec2-public-ip:3000`.
 
 ## Development Mode
 
@@ -137,7 +157,10 @@ Frontend will run on port 3001 and proxy API requests to backend on port 3000.
 
 ### Port already in use
 - Change the PORT environment variable
-- Or kill the process using the port: `lsof -ti:3000 | xargs kill`
+- Or kill the process using the port: 
+  - For port 80: `sudo lsof -ti:80 | xargs sudo kill`
+  - For port 3000: `lsof -ti:3000 | xargs kill`
+- Or stop PM2: `sudo pm2 stop react-node-app` (or without sudo if using port 3000)
 
 ### CORS errors in development
 - The backend includes CORS headers in development mode
