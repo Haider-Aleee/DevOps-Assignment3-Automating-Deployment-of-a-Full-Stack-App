@@ -1,5 +1,4 @@
 var express = require('express'); // For route handlers and templates to serve up.
-var path = require('path'); // Populating the path property of the request
 var responseTime = require('response-time'); // For code timing checks for performance logging
 var logger = require('morgan'); // HTTP request logging
 
@@ -9,18 +8,16 @@ var app = express();
 // Adds an X-Response-Time header to responses to measure response times
 app.use(responseTime());
 
-// logs all HTTP requests. The "dev" option gives it a specific styling
+// logs all HTTP requests. Thea "dev" option gives it a specific styling
 app.use(logger('dev'));
 
 // Sets up the response object in routes to contain a body property with an object of what is parsed from a JSON body request payload
 app.use(express.json())
 
-// Serving up of React app HTML with its static content - images, CSS files, and JavaScript files
+// Health check endpoint - Frontend is now served by Nginx container
 app.get('/', function (req, res) {
-  // Serve the frontend production build from Frontend/build
-  res.sendFile(path.join(__dirname, '..', 'Frontend', 'build', 'index.html'));
+  res.json({ message: 'Backend API Server Running', status: 'healthy' });
 });
-app.use(express.static(path.join(__dirname, '..', 'Frontend', 'build')));
 
 // Rest API routes
 app.use('/api/carts', carts);
