@@ -1,6 +1,7 @@
 var express = require('express'); // For route handlers and templates to serve up.
 var responseTime = require('response-time'); // For code timing checks for performance logging
 var logger = require('morgan'); // HTTP request logging
+var fs = require('fs'); // For checking if build directory exists
 
 var carts = require('./carts');
 var app = express();

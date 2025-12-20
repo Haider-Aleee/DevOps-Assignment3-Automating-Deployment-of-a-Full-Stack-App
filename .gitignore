@@ -66,9 +66,12 @@ typings/
 .DS_Store
 
 # production
-build
+/build
+Frontend/build
+Backend/build
 
 # Chrome debugger extension
 .chrome
 
-package-lock.json
+# Keep package-lock.json files for dependency management
+# package-lock.json
