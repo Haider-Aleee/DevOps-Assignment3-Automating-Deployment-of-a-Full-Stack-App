@@ -81,7 +81,7 @@ jobs:
               run: cd Frontend && npm run build
 
             - name: Upload build artifacts
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               with:
                 name: react-app-build
                 path: Frontend/build/
@@ -97,7 +97,7 @@ jobs:
               uses: actions/checkout@v4
 
             - name: Download build artifacts
-              uses: actions/download-artifact@v3
+              uses: actions/download-artifact@v4
               with:
                 name: react-app-build
                 path: Frontend/build/
@@ -172,7 +172,7 @@ jobs:
                 username: ${{ secrets.EMAIL_USERNAME }}
                 password: ${{ secrets.EMAIL_PASSWORD }}
                 subject: "✅ Deployment Successful - QA Testing Ready"
-                to: ${{ secrets.QA_EMAIL }},${{ github.event.pull_request.user.email || secrets.DEVELOPER_EMAIL }}
+                to: ${{ secrets.QA_EMAIL }},${{ github.event.pull_request.user.email }}
                 from: GitHub Actions
                 html_body: |
                   <h2>Deployment Successful!</h2>
@@ -216,7 +216,7 @@ jobs:
                 username: ${{ secrets.EMAIL_USERNAME }}
                 password: ${{ secrets.EMAIL_PASSWORD }}
                 subject: "❌ Workflow Failed - ${{ github.repository }}"
-                to: ${{ secrets.QA_EMAIL }},${{ github.event.pull_request.user.email || secrets.DEVELOPER_EMAIL }}
+                to: ${{ secrets.QA_EMAIL }},${{ github.event.pull_request.user.email }}
                 from: GitHub Actions
                 html_body: |
                   <h2>Workflow Failed!</h2>
