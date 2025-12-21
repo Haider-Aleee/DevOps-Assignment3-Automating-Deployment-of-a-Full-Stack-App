@@ -1,15 +1,9 @@
+# Docker Compose configuration for pulling images from AWS ECR
+# This file is specifically for production deployments using ECR images
+
 services:
   backend:
-    # Option 1: Pull from ECR (for production)
-    # Uncomment the image line and comment out the build section to use ECR images
     image: ${ECR_REGISTRY}/${ECR_BACKEND_REPO}:${IMAGE_TAG:-latest}
-    
-    # Option 2: Build locally (for development)
-    # Uncomment the build section and comment out the image line to build locally
-    # build:
-    #   context: ./Backend
-    #   dockerfile: Dockerfile
-    
     container_name: devops-backend
     ports:
       - "3000:3000"
@@ -27,16 +21,7 @@ services:
       start_period: 5s
 
   frontend:
-    # Option 1: Pull from ECR (for production)
-    # Uncomment the image line and comment out the build section to use ECR images
     image: ${ECR_REGISTRY}/${ECR_FRONTEND_REPO}:${IMAGE_TAG:-latest}
-    
-    # Option 2: Build locally (for development)
-    # Uncomment the build section and comment out the image line to build locally
-    # build:
-    #   context: ./Frontend
-    #   dockerfile: Dockerfile
-    
     container_name: devops-frontend
     ports:
       - "80:3000"
@@ -58,3 +43,4 @@ services:
 networks:
   devops-network:
     driver: bridge
+

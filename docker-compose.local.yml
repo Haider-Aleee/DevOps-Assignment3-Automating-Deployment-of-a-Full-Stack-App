@@ -1,15 +1,11 @@
+# Docker Compose configuration for local development
+# This file builds images locally instead of pulling from ECR
+
 services:
   backend:
-    # Option 1: Pull from ECR (for production)
-    # Uncomment the image line and comment out the build section to use ECR images
-    image: ${ECR_REGISTRY}/${ECR_BACKEND_REPO}:${IMAGE_TAG:-latest}
-    
-    # Option 2: Build locally (for development)
-    # Uncomment the build section and comment out the image line to build locally
-    # build:
-    #   context: ./Backend
-    #   dockerfile: Dockerfile
-    
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
     container_name: devops-backend
     ports:
       - "3000:3000"
@@ -19,6 +15,9 @@ services:
     networks:
       - devops-network
     restart: unless-stopped
+    volumes:
+      - ./Backend:/app/backend
+      - /app/backend/node_modules
     healthcheck:
       test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (res) => {if (res.statusCode !== 200) throw new Error(res.statusCode)})"]
       interval: 30s
@@ -27,16 +26,9 @@ services:
       start_period: 5s
 
   frontend:
-    # Option 1: Pull from ECR (for production)
-    # Uncomment the image line and comment out the build section to use ECR images
-    image: ${ECR_REGISTRY}/${ECR_FRONTEND_REPO}:${IMAGE_TAG:-latest}
-    
-    # Option 2: Build locally (for development)
-    # Uncomment the build section and comment out the image line to build locally
-    # build:
-    #   context: ./Frontend
-    #   dockerfile: Dockerfile
-    
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
     container_name: devops-frontend
     ports:
       - "80:3000"
@@ -58,3 +50,4 @@ services:
 networks:
   devops-network:
     driver: bridge
+

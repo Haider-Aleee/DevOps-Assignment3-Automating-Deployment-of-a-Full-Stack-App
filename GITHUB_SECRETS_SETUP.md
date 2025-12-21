@@ -100,6 +100,47 @@ To access GitHub Secrets:
 - **Example**: `team@yourcompany.com` or `dev-team@yourcompany.com`
 - **Used by**: Staging workflow
 
+### AWS ECR Secrets (for Docker Image Push)
+
+#### `AWS_ACCESS_KEY_ID`
+- **Description**: AWS Access Key ID for ECR access
+- **How to create**:
+  1. Go to AWS Console → IAM → Users
+  2. Select your user → Security credentials → Create access key
+  3. Select "Command Line Interface (CLI)"
+  4. Copy the Access Key ID
+- **Used by**: Both workflows (for pushing Docker images to ECR)
+
+#### `AWS_SECRET_ACCESS_KEY`
+- **Description**: AWS Secret Access Key (paired with Access Key ID)
+- **How to get**: Generated when you create the Access Key (shown only once)
+- **Important**: Save this immediately - you won't be able to see it again
+- **Used by**: Both workflows (for pushing Docker images to ECR)
+
+#### `AWS_REGION`
+- **Description**: AWS region where your ECR repositories are located
+- **Example**: `us-east-1`, `us-west-2`, `eu-west-1`
+- **How to find**: Check your ECR repository URL or AWS Console
+- **Used by**: Both workflows
+
+#### `ECR_FRONTEND_REPO`
+- **Description**: Name of your ECR repository for the frontend Docker image
+- **Example**: `react-node-frontend` or `myapp-frontend`
+- **How to find**: 
+  1. Go to AWS Console → ECR → Repositories
+  2. Find your frontend repository
+  3. Copy the repository name (not the full URI)
+- **Used by**: Both workflows
+
+#### `ECR_BACKEND_REPO`
+- **Description**: Name of your ECR repository for the backend Docker image
+- **Example**: `react-node-backend` or `myapp-backend`
+- **How to find**: 
+  1. Go to AWS Console → ECR → Repositories
+  2. Find your backend repository
+  3. Copy the repository name (not the full URI)
+- **Used by**: Both workflows
+
 ## Setting Up Gmail App Password
 
 1. **Enable 2-Step Verification** (required for App Passwords):
